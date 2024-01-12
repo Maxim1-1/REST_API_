@@ -1,19 +1,25 @@
 package com.Maxim;
 
+import com.Maxim.model.Event;
 import com.Maxim.model.User;
+import com.Maxim.service.EventService;
 import com.Maxim.service.UserService;
 
 import java.util.List;
 
 public class Runner {
     public static void main(String[] args) {
-        UserService userService = new UserService();
-        List<User> users2 = userService.getAllUsers();
+        EventService eventService = new EventService();
+        List<Event> events = eventService.getAllEvents();
 
-        for (User s:users2) {
-            System.out.println(s.getName());
-            System.out.println(s.getEvents().get(1).getId());
+        System.out.println(events.get(2).getUser().getName());
 
-        }
+//        for (Event s:events) {
+//            if (s.getUser().getName()!=null){
+//                System.out.println(s.getUser().getName());
+//            }
+//
+//
+//        }
     }
 }

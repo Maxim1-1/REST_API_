@@ -1,7 +1,13 @@
 package com.Maxim.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 @Table(name = "events")
 @Entity
 public class Event {
@@ -11,7 +17,8 @@ public class Event {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    private User user;
+    @JsonBackReference
+    private  User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "events_files",joinColumns = @JoinColumn(name = "event_id"),

@@ -2,6 +2,9 @@ package com.Maxim.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Table(name = "files")
 public class File {
@@ -14,6 +17,15 @@ public class File {
 
     @Column(name = "filePath")
     private String filePath;
+    @Column(name = "create_at")
+    private String createAt;
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
 
     public Integer getId() {
         return id;
