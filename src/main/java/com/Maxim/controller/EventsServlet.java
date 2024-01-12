@@ -78,7 +78,7 @@ public class EventsServlet extends HttpServlet {
         if (eventService.getEventById(event.getId())!=null) {
             eventService.updateEvent(event);
         } else {
-            resp.sendError(400,"File not exist");
+            resp.sendError(400,"Event not exist");
         }
     }
 }

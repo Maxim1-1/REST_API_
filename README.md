@@ -51,10 +51,13 @@ curl --location 'http://localhost:8081/REST_API_/files/history'
 ````
 
 ##  Endpoint list with params
-
+**Users**
 ````
 GET /users - возвращает список всех пользователей
+````
+````
 POST /users - добавляет нового пользователя. В теле запроса необходим отправить следующие параметры:
+
 name - имя пользователя
 events - список событий
 file.name - имя файла 
@@ -72,8 +75,150 @@ file.filePath - путь до файла
         }
     ]
 }
+````
+````
+PUT  /users - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
 
-PUT - позволяет обновить существующий объект
-DELETE - удаляет объект
- 
+id - id пользователя
+name - имя пользователя
+events - список событий
+file.name - имя файла 
+file.filePath - путь до файла
+
+Пример
+{   "id":4,
+    "name": "4",
+    "events": [
+        {
+            "file": {
+                "name": "4",
+                "filePath": "4"
+            }
+        }
+    ]
+}
+```` 
+````
+
+DELETE /users - удаляет пользователя. 
+
+Пример
+
+http://localhost:8081/REST_API_/users?user_id=9
+user_id - id пользователя.
+````
+
+````
+GET /users/id - возвращает пользователя по id. 
+
+Пример
+http://localhost:8081/REST_API_/users/id?user_id=9
+user_id - id пользователя.
+````
+
+**Events**
+````
+GET /events - возвращает список всех событий
+````
+````
+POST /events - добавляет новое событие. В теле запроса необходим отправить следующие параметры:
+
+name - имя файла
+filePath - путь до файла
+
+Пример
+  {
+        "file": {
+            "name": "test",
+            "filePath": "/",
+        }
+    }
+````
+````
+PUT  /events - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
+
+id - id события
+file.id - id файла связанного с событием
+name - имя файла 
+filePath - путь до файла
+
+Пример
+{
+    "id": 10,
+    "file": {
+        "id":4,
+        "name": "TEST",
+        "filePath": "/TEST"
+    }
+}
+```` 
+````
+
+DELETE /events - удаляет событие. 
+
+Пример
+
+http://localhost:8081/REST_API_/users?event_id=9
+event_id - id события.
+````
+````
+GET /events/id - возвращает пользователя по id. 
+
+Пример
+http://localhost:8081/REST_API_/events/id?event_id=9
+event_id - id пользователя.
+````
+
+**Files**
+````
+GET /files - возвращает список всех файлов
+````
+````
+POST /files - добавляет новый файл. В теле запроса необходим отправить следующие параметры:
+
+name - имя файла
+filePath - путь до файла
+
+Пример
+ {
+    "name": "test",
+    "filePath": "/"
+}
+````
+````
+PUT  /files - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
+
+id - id файла
+name - имя файла 
+filePath - путь до файла
+
+Пример
+{   
+    "id":21,
+    "name": "123test",
+    "filePath": "/"
+}
+```` 
+````
+
+DELETE /files - удаляет событие. 
+
+Пример
+
+http://localhost:8081/REST_API_/files?file_id=9
+file_id - id файла.
+````
+````
+GET /files/id - возвращает пользователя по id. 
+
+Пример
+http://localhost:8081/REST_API_/files/id?file_id=9
+file_id - id пользователя.
+````
+
+````
+GET /files/history - возвращает историю загрузки
+
+Пример
+http://localhost:8081/REST_API_/files/history
 ````
