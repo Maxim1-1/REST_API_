@@ -23,8 +23,8 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//    @JsonManagedReference
     private  List<Event> events;
 
     public Integer getId() {

@@ -2,8 +2,7 @@ CREATE TABLE files (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255),
   filePath VARCHAR(255),
-  create_at VARCHAR(255)
-);
+  create_at VARCHAR(255));
 
 CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,7 +13,7 @@ CREATE TABLE events (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id int,
   CONSTRAINT fk_user
-  FOREIGN KEY (user_id) REFERENCES user (id),
+  FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
 
