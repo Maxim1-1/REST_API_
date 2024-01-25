@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
+import com.maxim.dto.FileDTO;
 import com.maxim.model.File;
 import com.maxim.dto.HistoryDTO;
 import com.maxim.mapper.EventMapper;
@@ -17,6 +18,7 @@ import com.maxim.model.Status;
 import com.maxim.service.FileService;
 import com.maxim.mapper.FileMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maxim.utils.dto_ustils.MappingDTOUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -38,29 +40,30 @@ import java.util.UUID;
 )
 public class FilesRestControllerV1 extends HttpServlet {
     private FileService fileService = new FileService();
+    private MappingDTOUtils mappingDTOUtils = new MappingDTOUtils();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo() != null ? req.getPathInfo() : "";
+        FileMapper fileMapper = new FileMapper();
         if (path.equals("")) {
             List<File> files = fileService.getAllFiles();
+            List<FileDTO> fileDTOS = files.stream().map(file -> mappingDTOUtils.convertFileToFileDTO(file)).toList();
             resp.setContentType("application/json");
-            FileMapper fileMapper = new FileMapper();
-            fileMapper.getFiles(files, resp);
+            fileMapper.getFiles(fileDTOS, resp);
         } else if (path.matches("/\\d+")) {
             String id = path.substring(1);
             File file = fileService.getFileById(Integer.parseInt(id));
             if (file != null) {
                 resp.setContentType("application/json");
-                FileMapper fileMapper = new FileMapper();
-                fileMapper.getFilesById(file, resp);
+                FileDTO fileDTO = mappingDTOUtils.convertFileToFileDTO(file);
+                fileMapper.getFilesById(fileDTO, resp);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } else if (path.matches("/history")) {
             List<File> files = fileService.getAllFiles();
             List<HistoryDTO> historyDTOS = new ArrayList<>();
-
             for (File file : files) {
                 if (file.getCreateAt() != null) {
                     HistoryDTO historyDTO = new HistoryDTO();
@@ -81,47 +84,22 @@ public class FilesRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
         String applicationPath = req.getServletContext().getRealPath("");
-        String uploadFilePath = applicationPath + java.io.File.separator + "uploads";
-
-        java.io.File fileSaveDir = new java.io.File(uploadFilePath);
-
-//        System.out.println("Upload File Directory=" + fileSaveDir.getAbsolutePath());
+        String uploadFilePath = applicationPath + "files" + java.io.File.separator ;
         Part filePart = req.getPart("file");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        filePart.write(uploadFilePath + java.io.File.separator + fileName);
-
-
-//        DiskFileItemFactory fileFactory = new DiskFileItemFactory();
-//        ServletFileUpload uploader = null;
-//        Part filePart = req.getPart("file");
-//        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-//
-//
-//        try (InputStream fileContent = filePart.getInputStream()) {
-
-//            File file = new File(request.getServletContext().getAttribute("FILES_DIR")+File.separator+fileItem.getName());
-//            String filePath = new java.io.File("").getAbsolutePath() + "src/main/resources/files" + fileName;
-//        java.io.File filePath = new java.io.File(req.getServletContext().getAttribute("FILES_DIR") + java.io.File.separator + fileName);
-
-
-//            Files.copy(fileContent, Paths.get(filePath));
-//            LocalDate currentDate = LocalDate.now();
-//            File file = new File();
-//            file.setStatus(Status.ACTIVE);
-//            file.setName(fileName);
-//            file.setFilePath(filePath);
-//            file.setUpdatedAt(currentDate.toString());
-//            file.setUpdatedAt(currentDate.toString());
-//            fileService.save(file);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        resp.getWriter().write("Файл успешно загружен");
+        String filePath = uploadFilePath + fileName;
+        filePart.write(filePath);
+        LocalDate currentDate = LocalDate.now();
+        File file = new File();
+        file.setStatus(String.valueOf(Status.ACTIVE));
+        file.setName(fileName);
+        file.setFilePath(filePath);
+        file.setUpdatedAt(currentDate.toString());
+        file.setUpdatedAt(currentDate.toString());
+        fileService.save(file);
+        resp.getWriter().write("Файл успешно загружен");
     }
-
 
 
     @Override
@@ -130,7 +108,6 @@ public class FilesRestControllerV1 extends HttpServlet {
         if (path.matches("/\\d+")) {
             String file_id = path.substring(1);
             File file = fileService.getFileById(Integer.parseInt(file_id));
-
             if (file != null) {
                 fileService.deleteFileById(Integer.valueOf(file_id));
             } else {
