@@ -10,15 +10,13 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class UserMapper {
-
+    private ObjectMapper mapper = new ObjectMapper();
     public void getUsers(List<UserDTO> users, HttpServletResponse response) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
         PrintWriter messageWriter = response.getWriter();
         messageWriter.print(mapper.writeValueAsString(users));
     }
 
     public void getUserById(User user, HttpServletResponse response) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
         PrintWriter messageWriter = response.getWriter();
         messageWriter.print(mapper.writeValueAsString(user));
     }

@@ -1,7 +1,6 @@
 package com.maxim.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.maxim.model.Status;
 
 
 public class EventDTO {
@@ -10,12 +9,12 @@ public class EventDTO {
 
     @JsonBackReference
     private UserDTO userDTO;
-
     private FileDTO fileDTO;
     public Integer getId() {
         return id;
     }
     private String status;
+
     public String getStatus() {
         return status;
     }
@@ -35,11 +34,11 @@ public class EventDTO {
         this.userDTO = userDTO;
     }
 
-    public FileDTO getFile() {
+    public FileDTO getFileDTO() {
         return fileDTO;
     }
 
-    public void setFile(FileDTO fileDTO) {
+    public void setFileDTO(FileDTO fileDTO) {
         this.fileDTO = fileDTO;
     }
 

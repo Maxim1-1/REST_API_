@@ -66,6 +66,7 @@ public class UsersRestControllerV1 extends HttpServlet {
         String json = sb.toString();
         UserDTO userDTO = new ObjectMapper().readerFor( UserDTO.class).readValue(json);
         User user = mapper.map(userDTO, User.class);
+
         userService.saveUser(user);
     }
 

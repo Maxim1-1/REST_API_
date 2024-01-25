@@ -1,7 +1,6 @@
 package com.maxim.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.maxim.model.Status;
 
 import java.util.List;
 
@@ -39,11 +38,11 @@ public class UserDTO {
         this.name = name;
     }
 
-    public List<EventDTO> getEvents() {
+    public List<EventDTO> getEventsDTO() {
         return eventsDTO;
     }
 
-    public void setEvents(List<EventDTO> eventDTOS) {
+    public void setEventsDTO(List<EventDTO> eventDTOS) {
         this.eventsDTO = eventDTOS;
     }
 }

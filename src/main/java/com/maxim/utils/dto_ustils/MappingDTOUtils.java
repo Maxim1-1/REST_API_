@@ -18,7 +18,7 @@ public class MappingDTOUtils {
         eventDTO.setId(event.getId());
         eventDTO.setStatus(String.valueOf(event.getStatus()));
         eventDTO.setUser(convertUserToUserDTO(event.getUser()));
-        eventDTO.setFile(convertFileToFileDTO(event.getFile()));
+        eventDTO.setFileDTO(convertFileToFileDTO(event.getFile()));
         return eventDTO;
     }
 
@@ -27,7 +27,7 @@ public class MappingDTOUtils {
         event.setId(event.getId());
         event.setStatus(String.valueOf(event.getStatus()));
         event.setUser(convertUserDTOToUser(eventDTO.getUser()));
-        event.setFile(convertFileDTOToFile(eventDTO.getFile()));
+        event.setFile(convertFileDTOToFile(eventDTO.getFileDTO()));
         return event;
     }
 
@@ -63,7 +63,7 @@ public class MappingDTOUtils {
         userDTO.setName(user.getName());
         userDTO.setStatus(String.valueOf(user.getStatus()));
         List<EventDTO> eventsDTO = user.getEvents().stream().map(this::convertEventToEventDTO).collect(Collectors.toList());
-        userDTO.setEvents(eventsDTO);
+        userDTO.setEventsDTO(eventsDTO);
         return userDTO;
     }
 
@@ -74,7 +74,7 @@ public class MappingDTOUtils {
             user.setId(userDTO.getId());
             user.setName(userDTO.getName());
             user.setStatus(String.valueOf((userDTO.getStatus())));
-            List<Event> events = userDTO.getEvents().stream().map(this::convertEventDTOToEvent).collect(Collectors.toList());
+            List<Event> events = userDTO.getEventsDTO().stream().map(this::convertEventDTOToEvent).collect(Collectors.toList());
             user.setEvents(events);
             return user;
         } else return null;

@@ -5,9 +5,7 @@ import com.maxim.model.Status;
 
 public class FileDTO {
     private Integer id;
-
     private String name;
-
     private String filePath;
     private String updatedAt;
     private String createAt;
