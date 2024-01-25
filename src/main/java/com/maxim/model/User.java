@@ -17,8 +17,7 @@ public class User {
     @Column(name = "name")
     private String name;
 
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private  List<Event> events;
 
     @Column(name = "status")

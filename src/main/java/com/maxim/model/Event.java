@@ -13,7 +13,6 @@ public class Event {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    @Column(name = "user_id")
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)

@@ -9,9 +9,11 @@ import java.util.List;
 public class UserDTO {
 
     private Integer id;
-
     private String name;
+    @JsonManagedReference
+    private  List<EventDTO> eventsDTO;
     private String status;
+
     public String getStatus() {
         return status;
     }
@@ -20,8 +22,6 @@ public class UserDTO {
         this.status = status;
     }
 
-    @JsonManagedReference
-    private  List<EventDTO> eventsDTO;
 
     public Integer getId() {
         return id;

@@ -22,9 +22,19 @@ public class HibernateUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        try (Session session = hibernateConnector.getSessionFactory().openSession()) {
+
+     Session session = hibernateConnector.getSessionFactory().openSession();
             return session.createQuery("from User").getResultList();
-        }
+
+
+//        try (Session session = hibernateConnector.getSessionFactory().openSession()) {
+//            return session.createQuery("from User").getResultList();
+//            String jpqlQuery = "select u, e, f\n" +
+//                    "from user u \n" +
+//                    "left join u.events e \n" +
+//                    "left join e.file f";
+//            return session.createQuery(jpqlQuery).getResultList();
+//        }
     }
 
     @Override

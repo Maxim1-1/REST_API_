@@ -59,6 +59,11 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.16.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>3.2.0</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -69,9 +74,9 @@
         <artifactId>flyway-maven-plugin</artifactId>
         <version>9.22.2</version>
         <configuration>
-          <url></url>
-          <user></user>
-          <password></password>
+          <url>jdbc:mysql://localhost:3306/rest</url>
+          <user>root</user>
+          <password>root</password>
           <locations>
             <location>filesystem:src/main/resources/db/migration</location>
           </locations>

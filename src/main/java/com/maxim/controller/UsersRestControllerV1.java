@@ -2,6 +2,7 @@ package com.maxim.controller;
 
 
 import com.maxim.dto.UserDTO;
+import com.maxim.model.Status;
 import com.maxim.model.User;
 import com.maxim.service.UserService;
 import com.maxim.mapper.UserMapper;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.modelmapper.ModelMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,18 +25,21 @@ import java.util.stream.Collectors;
 public class UsersRestControllerV1 extends HttpServlet {
 
     private UserService userService = new UserService();
-    private MappingDTOUtils mappingDTOUtils = new MappingDTOUtils();
+    private ModelMapper mapper= new ModelMapper();;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo() != null ? req.getPathInfo() : "";
         UserMapper userMapper = new UserMapper();
         if (path.equals("")) {
-            List<User> users = userService.getAllUsers();
             resp.setContentType("application/json");
 
-//            List<UserDTO> userDTOS = users.stream().map(user -> mappingDTOUtils.convertUserToUserDTO(user)).toList();
-            userMapper.getUsers(users,resp);
+            List<User> users = userService.getAllUsers();
+            List<UserDTO> usersDTO = users.stream()
+                    .map(user -> mapper.map(user, UserDTO.class))
+                    .collect(Collectors.toList());
+
+            userMapper.getUsers(usersDTO,resp);
 
         } else if (path.matches("/\\d+")) {
             String id = path.substring(1);
@@ -59,9 +64,8 @@ public class UsersRestControllerV1 extends HttpServlet {
             sb.append(line.strip());
         }
         String json = sb.toString();
-
         UserDTO userDTO = new ObjectMapper().readerFor( UserDTO.class).readValue(json);
-        User user = mappingDTOUtils.convertUserDTOToUser(userDTO);
+        User user = mapper.map(userDTO, User.class);
         userService.saveUser(user);
     }
 
@@ -72,7 +76,8 @@ public class UsersRestControllerV1 extends HttpServlet {
             String user_id = path.substring(1);
             User user = userService.getUserById(Integer.parseInt(user_id));
             if (user != null) {
-                userService.deleteUserById(Integer.valueOf(user_id));
+                user.setStatus(String.valueOf(Status.DELETED));
+                userService.updateUserById(user);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND,"User not exist");
             }
