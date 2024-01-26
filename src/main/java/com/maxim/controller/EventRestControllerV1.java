@@ -3,6 +3,7 @@ package com.maxim.controller;
 
 import com.maxim.dto.EventDTO;
 import com.maxim.model.Event;
+import com.maxim.model.Status;
 import com.maxim.service.EventService;
 import com.maxim.mapper.EventMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +13,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.modelmapper.ModelMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,15 +26,18 @@ import java.util.List;
 public class EventRestControllerV1 extends HttpServlet {
 
     private EventService eventService = new EventService();
+    private ModelMapper mapper = new ModelMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo() != null ? req.getPathInfo() : "";
         EventMapper eventMapper = new EventMapper();
         if (path.equals("")) {
-            List<Event> events = eventService.getAllEvents();
             resp.setContentType("application/json");
-            eventMapper.getEvents(events, resp);
+            List<Event> events = eventService.getAllEvents();
+            List<EventDTO> eventDTOS = new ArrayList<>();
+
+            eventMapper.getEvents(eventDTOS, resp);
         } else if (path.matches("/\\d+")) {
             String id = path.substring(1);
             Event event = eventService.getEventById(Integer.parseInt(id));
@@ -49,7 +55,6 @@ public class EventRestControllerV1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         StringBuilder sb = new StringBuilder();
-        MappingDTOUtils mappingDTOUtils = new MappingDTOUtils();
         BufferedReader reader = req.getReader();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -57,8 +62,7 @@ public class EventRestControllerV1 extends HttpServlet {
         }
         String json = sb.toString();
         EventDTO eventDTO = new ObjectMapper().readerFor(EventDTO.class).readValue(json);
-        Event event = mappingDTOUtils.convertEventDTOToEvent(eventDTO);
-//        Event event =new ObjectMapper().readerFor(EventDTO.class).readValue(json);
+        Event event = mapper.map(eventDTO,Event.class);
         eventService.saveEvent(event);
     }
 
@@ -71,7 +75,8 @@ public class EventRestControllerV1 extends HttpServlet {
             Event event = eventService.getEventById(Integer.parseInt(event_id));
 
             if (event != null) {
-                eventService.deleteEventById(Integer.valueOf(event_id));
+                event.setStatus(String.valueOf(Status.DELETED));
+                eventService.updateEvent(event);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND,"Event not exist");
             }
