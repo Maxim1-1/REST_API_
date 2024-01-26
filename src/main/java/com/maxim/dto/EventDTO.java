@@ -10,11 +10,11 @@ public class EventDTO {
     @JsonBackReference
     private UserDTO userDTO;
     private FileDTO fileDTO;
+
+    private String status;
     public Integer getId() {
         return id;
     }
-    private String status;
-
     public String getStatus() {
         return status;
     }
@@ -22,15 +22,13 @@ public class EventDTO {
         this.status = status;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) {this.id = id;}
 
-    public UserDTO getUser() {
+    public UserDTO getUserDTO() {
         return userDTO;
     }
 
-    public void setUser(UserDTO userDTO) {
+    public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }
 

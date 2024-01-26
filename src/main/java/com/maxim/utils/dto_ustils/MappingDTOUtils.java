@@ -17,24 +17,26 @@ public class MappingDTOUtils {
         EventDTO eventDTO = new EventDTO();
         eventDTO.setId(event.getId());
         eventDTO.setStatus(String.valueOf(event.getStatus()));
-        eventDTO.setUser(convertUserToUserDTO(event.getUser()));
+        eventDTO.setUserDTO(convertUserToUserDTO(event.getUser()));
         eventDTO.setFileDTO(convertFileToFileDTO(event.getFile()));
         return eventDTO;
     }
 
     public Event convertEventDTOToEvent(EventDTO eventDTO) {
-        Event event = new Event();
-        event.setId(event.getId());
-        event.setStatus(String.valueOf(event.getStatus()));
-        event.setUser(convertUserDTOToUser(eventDTO.getUser()));
-        event.setFile(convertFileDTOToFile(eventDTO.getFileDTO()));
-        return event;
+        if (eventDTO!=null) {
+            Event event = new Event();
+            event.setId(event.getId());
+            event.setStatus(String.valueOf(event.getStatus()));
+            event.setUser(convertUserDTOToUser(eventDTO.getUserDTO()));
+            event.setFile(convertFileDTOToFile(eventDTO.getFileDTO()));
+            return event;
+        } else return null;
+
     }
 
 
     public File convertFileDTOToFile(FileDTO fileDTO) {
         File file = new File();
-
         file.setId(fileDTO.getId());
         file.setName(fileDTO.getName());
         file.setCreateAt(fileDTO.getCreateAt());
