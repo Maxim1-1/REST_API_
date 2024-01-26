@@ -93,7 +93,7 @@ public class FilesRestControllerV1 extends HttpServlet {
         file.setFilePath(filePath);
         file.setUpdatedAt(currentDate.toString());
         file.setUpdatedAt(currentDate.toString());
-        fileService.save(file);
+        fileService.saveFile(file);
         resp.getWriter().write("Файл успешно загружен");
     }
 

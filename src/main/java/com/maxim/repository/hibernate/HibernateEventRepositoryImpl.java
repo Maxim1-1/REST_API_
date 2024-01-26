@@ -2,6 +2,7 @@ package com.maxim.repository.hibernate;
 
 
 import com.maxim.model.Event;
+import com.maxim.model.Status;
 import com.maxim.repository.EventRepository;
 import com.maxim.utils.hibernate_utils.HibernateConnector;
 import org.hibernate.Session;
@@ -53,8 +54,9 @@ public class HibernateEventRepositoryImpl implements EventRepository {
     public void deleteById(Integer id) {
         try (Session session = hibernateConnector.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            Event label = session.get(Event.class, id);
-            session.remove(label);
+            Event event = session.get(Event.class, id);
+            event.setStatus(String.valueOf(Status.DELETED));
+            session.merge(event);
             transaction.commit();
         }
 

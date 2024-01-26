@@ -77,8 +77,7 @@ public class EventRestControllerV1 extends HttpServlet {
             Event event = eventService.getEventById(Integer.parseInt(event_id));
 
             if (event != null) {
-                event.setStatus(String.valueOf(Status.DELETED));
-                eventService.updateEvent(event);
+                eventService.deleteEventById(Integer.valueOf(event_id));
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND,"Event not exist");
             }

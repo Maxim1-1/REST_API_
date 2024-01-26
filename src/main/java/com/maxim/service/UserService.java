@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserService {
 
-    private final UserRepository userRepository = new HibernateUserRepositoryImpl();
+    private UserRepository userRepository = new HibernateUserRepositoryImpl();
 
     public User saveUser(User user) {
             return userRepository.save(user);

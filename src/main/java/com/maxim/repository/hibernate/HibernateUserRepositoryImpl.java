@@ -1,6 +1,7 @@
 package com.maxim.repository.hibernate;
 
 
+import com.maxim.model.Status;
 import com.maxim.model.User;
 import com.maxim.repository.UserRepository;
 import com.maxim.utils.hibernate_utils.HibernateConnector;
@@ -54,8 +55,9 @@ public class HibernateUserRepositoryImpl implements UserRepository {
     public void deleteById(Integer id) {
         try (Session session = hibernateConnector.getSessionFactory().openSession();) {
             Transaction transaction = session.beginTransaction();
-            User writer = session.get(User.class, id);
-            session.remove(writer);
+            User user = session.get(User.class, id);
+            user.setStatus(String.valueOf(Status.DELETED));
+            session.merge(user);
             transaction.commit();
         }
     }

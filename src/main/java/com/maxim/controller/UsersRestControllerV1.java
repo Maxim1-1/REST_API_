@@ -77,8 +77,7 @@ public class UsersRestControllerV1 extends HttpServlet {
             String user_id = path.substring(1);
             User user = userService.getUserById(Integer.parseInt(user_id));
             if (user != null) {
-                user.setStatus(String.valueOf(Status.DELETED));
-                userService.updateUserById(user);
+                userService.deleteUserById(Integer.valueOf(user_id));
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not exist");
             }

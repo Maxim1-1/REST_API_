@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EventService {
 
-    private final EventRepository eventRepository = new HibernateEventRepositoryImpl();
+    private  EventRepository eventRepository = new HibernateEventRepositoryImpl();
 
     public Event saveEvent(Event event) {
         return eventRepository.save(event);

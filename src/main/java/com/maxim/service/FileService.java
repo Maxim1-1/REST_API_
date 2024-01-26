@@ -9,9 +9,9 @@ import java.util.List;
 
 public class FileService {
 
-    private final FileRepository hibernateFileRepository = new HibernateFileRepositoryImpl();
+    private  FileRepository hibernateFileRepository = new HibernateFileRepositoryImpl();
 
-    public File save(File file) {
+    public File saveFile(File file) {
         return hibernateFileRepository.save(file);
     }
 
