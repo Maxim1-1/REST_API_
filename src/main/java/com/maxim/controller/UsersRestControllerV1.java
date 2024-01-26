@@ -33,7 +33,9 @@ public class UsersRestControllerV1 extends HttpServlet {
 
     private UserService userService = new UserService();
     private ModelMapper mapper = new ModelMapper();
-    ;
+
+    private MappingDTOUtils mappingDTOUtils = new MappingDTOUtils();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,67 +44,17 @@ public class UsersRestControllerV1 extends HttpServlet {
         if (path.equals("")) {
             resp.setContentType("application/json");
             List<User> users = userService.getAllUsers();
-            List<UserDTO> usersDTO = new ArrayList<>();
-//            for (User user : users) {
-//                UserDTO userDTO = mapper.map(user, UserDTO.class);
-//
-//                if (user.getEvents() != null) {
-//                    List<EventDTO> eventDTOS = mapper.map(user.getEvents(), new TypeToken<List<EventDTO>>() {}.getType());
-//                    for (EventDTO eventDTO : eventDTOS) {
-//                        eventDTO.setUserDTO(userDTO);
-//                    }
-//                    List<Event> events = user.getEvents();
-//
-//                    for (int i = 0; i < events.size(); i++) {
-//                        Event event = events.get(i);
-//                        EventDTO eventDTO = eventDTOS.get(i);
-//                        if (event.getFile()!=null) {
-//                            FileDTO fileDTO = mapper.map(event.getFile(), FileDTO.class);
-//                            eventDTO.setFileDTO(fileDTO);
-//                        } else userDTO.setEventsDTO(eventDTOS);
-//                    }
-//
-//                } else userDTO.setEventsDTO(null);
-//
-//
-//                usersDTO.add(userDTO);
-//            }
-
-            for (User user : users) {
-                UserDTO userDTO = mapper.map(user, UserDTO.class);
-
-                if (user.getEvents() != null) {
-                    List<EventDTO> eventDTOS = mapper.map(user.getEvents(), new TypeToken<List<EventDTO>>() {}.getType());
-
-                    for (EventDTO eventDTO : eventDTOS) {
-                        eventDTO.setUserDTO(userDTO);
-                    }
-
-                    for (Event event : user.getEvents()) {
-                        EventDTO eventDTO = eventDTOS.stream()
-                                .filter(dto -> dto.getId() == event.getId())
-                                .findFirst()
-                                .orElse(null);
-
-                        if (event.getFile()!=null) {
-                            FileDTO fileDTO = mapper.map(event.getFile(), FileDTO.class);
-                            eventDTO.setFileDTO(fileDTO);
-                        }
-                    }
-
-                    userDTO.setEventsDTO(eventDTOS);
-                }
-
-                usersDTO.add(userDTO);
-            }
+            List<UserDTO> usersDTO = mappingDTOUtils.convertUserListToUserDTOList(users);
             userMapper.getUsers(usersDTO, resp);
-
         } else if (path.matches("/\\d+")) {
+            List<User> users = new ArrayList<>();
             String id = path.substring(1);
             User user = userService.getUserById(Integer.parseInt(id));
+            users.add(user);
+            UserDTO userDTO = mappingDTOUtils.convertUserListToUserDTOList(users).get(0);
             if (user != null) {
                 resp.setContentType("application/json");
-                userMapper.getUserById(user, resp);
+                userMapper.getUserById(userDTO, resp);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
@@ -122,7 +74,6 @@ public class UsersRestControllerV1 extends HttpServlet {
         String json = sb.toString();
         UserDTO userDTO = new ObjectMapper().readerFor(UserDTO.class).readValue(json);
         User user = mapper.map(userDTO, User.class);
-
         userService.saveUser(user);
     }
 

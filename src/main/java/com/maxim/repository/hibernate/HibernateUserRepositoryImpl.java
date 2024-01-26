@@ -16,25 +16,18 @@ public class HibernateUserRepositoryImpl implements UserRepository {
     @Override
     public User getById(Integer id) {
         try (Session session = hibernateConnector.getSessionFactory().openSession();) {
-            return session.get(User.class, id);
+            String jpqlQuery = "select u from User u left join fetch u.events e left join fetch e.file f where u.id = :id";
+            return session.createQuery(jpqlQuery, User.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
         }
     }
 
     @Override
     public List<User> getAll() {
-
-     Session session = hibernateConnector.getSessionFactory().openSession();
-            return session.createQuery("from User").getResultList();
-
-
-//        try (Session session = hibernateConnector.getSessionFactory().openSession()) {
-//            return session.createQuery("from User").getResultList();
-//            String jpqlQuery = "select u, e, f\n" +
-//                    "from user u \n" +
-//                    "left join u.events e \n" +
-//                    "left join e.file f";
-//            return session.createQuery(jpqlQuery).getResultList();
-//        }
+        try (Session session = hibernateConnector.getSessionFactory().openSession();) {
+            return session.createQuery("from User u left join fetch u.events e left join fetch e.file").getResultList();
+        }
     }
 
     @Override

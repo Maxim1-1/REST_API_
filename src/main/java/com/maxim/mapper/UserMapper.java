@@ -16,8 +16,8 @@ public class UserMapper {
         messageWriter.print(mapper.writeValueAsString(users));
     }
 
-    public void getUserById(User user, HttpServletResponse response) throws IOException {
+    public void getUserById(UserDTO userDTO, HttpServletResponse response) throws IOException {
         PrintWriter messageWriter = response.getWriter();
-        messageWriter.print(mapper.writeValueAsString(user));
+        messageWriter.print(mapper.writeValueAsString(userDTO));
     }
 }

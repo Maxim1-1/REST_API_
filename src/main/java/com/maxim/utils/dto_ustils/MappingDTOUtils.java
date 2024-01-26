@@ -7,11 +7,15 @@ import com.maxim.model.Event;
 import com.maxim.model.File;
 import com.maxim.model.Status;
 import com.maxim.model.User;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MappingDTOUtils {
+    private ModelMapper mapper = new ModelMapper();
 
     public EventDTO convertEventToEventDTO(Event event) {
         EventDTO eventDTO = new EventDTO();
@@ -83,5 +87,32 @@ public class MappingDTOUtils {
     }
 
 
+    public List<UserDTO> convertUserListToUserDTOList(List<User> users){
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (User user : users) {
+            UserDTO userDTO = mapper.map(user, UserDTO.class);
+            if (user.getEvents() != null) {
+                List<EventDTO> eventDTOS = mapper.map(user.getEvents(), new TypeToken<List<EventDTO>>() {}.getType());
+
+                for (EventDTO eventDTO : eventDTOS) {
+                    eventDTO.setUserDTO(userDTO);
+                }
+                for (Event event : user.getEvents()) {
+                    EventDTO eventDTO = eventDTOS.stream()
+                            .filter(dto -> dto.getId() == event.getId())
+                            .findFirst()
+                            .orElse(null);
+
+                    if (event.getFile()!=null) {
+                        FileDTO fileDTO = mapper.map(event.getFile(), FileDTO.class);
+                        eventDTO.setFileDTO(fileDTO);
+                    }
+                }
+                userDTO.setEventsDTO(eventDTOS);
+            }
+            usersDTO.add(userDTO);
+        }
+        return usersDTO;
+    }
 
 }
