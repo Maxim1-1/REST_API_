@@ -1,10 +1,10 @@
 package com.maxim.repository.hibernate;
 
 
-import com.maxim.model.Status;
-import com.maxim.utils.hibernate_utils.HibernateConnector;
 import com.maxim.model.File;
+import com.maxim.model.Status;
 import com.maxim.repository.FileRepository;
+import com.maxim.utils.hibernate_utils.HibernateConnector;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

@@ -1,9 +1,9 @@
 package com.maxim.repository.hibernate;
 
 
-import com.maxim.utils.hibernate_utils.HibernateConnector;
 import com.maxim.model.User;
 import com.maxim.repository.UserRepository;
+import com.maxim.utils.hibernate_utils.HibernateConnector;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

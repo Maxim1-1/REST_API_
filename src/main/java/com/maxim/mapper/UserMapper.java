@@ -1,8 +1,7 @@
 package com.maxim.mapper;
 
-import com.maxim.dto.UserDTO;
-import com.maxim.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maxim.dto.UserDTO;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;

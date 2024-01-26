@@ -1,23 +1,13 @@
 package com.maxim.controller;
 
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxim.dto.FileDTO;
-import com.maxim.model.File;
 import com.maxim.dto.HistoryDTO;
-import com.maxim.mapper.EventMapper;
-import com.maxim.model.Event;
-
-import java.nio.file.Path;
-
+import com.maxim.mapper.FileMapper;
+import com.maxim.model.File;
 import com.maxim.model.Status;
 import com.maxim.service.FileService;
-import com.maxim.mapper.FileMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxim.utils.dto_ustils.MappingDTOUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -26,10 +16,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 @WebServlet("/api/v1/files/*")
@@ -40,6 +35,7 @@ import java.util.UUID;
 )
 public class FilesRestControllerV1 extends HttpServlet {
     private FileService fileService = new FileService();
+    private ModelMapper mapper = new ModelMapper();
     private MappingDTOUtils mappingDTOUtils = new MappingDTOUtils();
 
     @Override
@@ -48,7 +44,7 @@ public class FilesRestControllerV1 extends HttpServlet {
         FileMapper fileMapper = new FileMapper();
         if (path.equals("")) {
             List<File> files = fileService.getAllFiles();
-            List<FileDTO> fileDTOS = files.stream().map(file -> mappingDTOUtils.convertFileToFileDTO(file)).toList();
+            List<FileDTO> fileDTOS = mapper.map(files, new TypeToken<List<FileDTO>>() {}.getType());;
             resp.setContentType("application/json");
             fileMapper.getFiles(fileDTOS, resp);
         } else if (path.matches("/\\d+")) {
@@ -56,7 +52,7 @@ public class FilesRestControllerV1 extends HttpServlet {
             File file = fileService.getFileById(Integer.parseInt(id));
             if (file != null) {
                 resp.setContentType("application/json");
-                FileDTO fileDTO = mappingDTOUtils.convertFileToFileDTO(file);
+                FileDTO fileDTO = mapper.map(file, FileDTO.class);;
                 fileMapper.getFilesById(fileDTO, resp);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -1,6 +1,5 @@
 package com.maxim.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 

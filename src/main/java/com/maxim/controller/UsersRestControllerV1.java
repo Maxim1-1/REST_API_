@@ -1,16 +1,12 @@
 package com.maxim.controller;
 
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.maxim.dto.EventDTO;
-import com.maxim.dto.FileDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxim.dto.UserDTO;
-import com.maxim.model.Event;
+import com.maxim.mapper.UserMapper;
 import com.maxim.model.Status;
 import com.maxim.model.User;
 import com.maxim.service.UserService;
-import com.maxim.mapper.UserMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxim.utils.dto_ustils.MappingDTOUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,14 +14,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 
-import java.lang.reflect.Type;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @WebServlet("/api/v1/users/*")

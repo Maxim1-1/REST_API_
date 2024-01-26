@@ -1,8 +1,7 @@
 package com.maxim.mapper;
 
-import com.maxim.dto.EventDTO;
-import com.maxim.model.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maxim.dto.EventDTO;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ public class EventMapper {
         messageWriter.print(mapper.writeValueAsString(events));
     }
 
-    public void getEventById(Event event, HttpServletResponse response) throws IOException {
+    public void getEventById(EventDTO event, HttpServletResponse response) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter messageWriter = response.getWriter();
         messageWriter.print(mapper.writeValueAsString(event));

@@ -1,9 +1,8 @@
 package com.maxim.mapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxim.dto.FileDTO;
 import com.maxim.dto.HistoryDTO;
-import com.maxim.model.File;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;

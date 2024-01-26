@@ -1,12 +1,12 @@
 package com.maxim.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxim.dto.EventDTO;
+import com.maxim.mapper.EventMapper;
 import com.maxim.model.Event;
 import com.maxim.model.Status;
 import com.maxim.service.EventService;
-import com.maxim.mapper.EventMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxim.utils.dto_ustils.MappingDTOUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,7 +17,6 @@ import org.modelmapper.ModelMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class EventRestControllerV1 extends HttpServlet {
 
     private EventService eventService = new EventService();
     private ModelMapper mapper = new ModelMapper();
+    private MappingDTOUtils mappingDTOUtils = new MappingDTOUtils();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,15 +35,17 @@ public class EventRestControllerV1 extends HttpServlet {
         if (path.equals("")) {
             resp.setContentType("application/json");
             List<Event> events = eventService.getAllEvents();
-            List<EventDTO> eventDTOS = new ArrayList<>();
-
+            List<EventDTO> eventDTOS = mappingDTOUtils.convertEventListToEventDTOList(events);
             eventMapper.getEvents(eventDTOS, resp);
         } else if (path.matches("/\\d+")) {
             String id = path.substring(1);
+            List<Event> events = new ArrayList<>();
             Event event = eventService.getEventById(Integer.parseInt(id));
+            events.add(event);
+            EventDTO eventDTO = mappingDTOUtils.convertEventListToEventDTOList(events).get(0);
             if (event != null) {
                 resp.setContentType("application/json");
-                eventMapper.getEventById(event, resp);
+                eventMapper.getEventById(eventDTO, resp);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             }

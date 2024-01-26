@@ -1,8 +1,6 @@
 package com.maxim.dto;
 
 
-import com.maxim.model.Status;
-
 public class FileDTO {
     private Integer id;
     private String name;
