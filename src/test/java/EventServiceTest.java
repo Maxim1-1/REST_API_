@@ -59,7 +59,8 @@ public class EventServiceTest {
         Mockito.when(eventRepository.getById(100)).thenReturn(event1);
         Event event = eventService.getEventById(100);
 
-        assertEquals(event.getId(), event.getId());
+        assertEquals(event.getId(), event1.getId());
+
 //        verify(eventService).getEventById(1);
 
     }
