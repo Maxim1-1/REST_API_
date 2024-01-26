@@ -26,10 +26,10 @@ import static org.mockito.Mockito.when;
 public class EventServiceTest {
 
     @InjectMocks
-    private EventService eventService = new EventService();
+    private EventService eventService;
     @Mock
     private Event eventMock = new Event();
-    @InjectMocks
+    @Mock
     private HibernateEventRepositoryImpl eventRepository;
 
     @BeforeEach
