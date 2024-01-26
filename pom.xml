@@ -17,6 +17,8 @@
     <mysql.version>8.0.33</mysql.version>
     <flyway.version>10.4.1</flyway.version>
     <hibernate.version>6.4.0.Final</hibernate.version>
+    <junit.version>5.8.1</junit.version>
+    <mockito.version>5.8.0</mockito.version>
 
     <tomcat.plugin.version>2.2</tomcat.plugin.version>
 
@@ -64,6 +66,24 @@
       <artifactId>modelmapper</artifactId>
       <version>3.2.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+    </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+
   </dependencies>
 
   <build>
