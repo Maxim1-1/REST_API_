@@ -53,31 +53,42 @@ curl --location 'http://localhost:8081/REST_API_/files/history'
 ##  Endpoint list with params
 **Users**
 ````
-GET /users - возвращает список всех пользователей
+GET /api/v1/users - возвращает список всех пользователей
 ````
 ````
-POST /users - добавляет нового пользователя. В теле запроса необходим отправить следующие параметры:
+POST /api/v1/users - добавляет нового пользователя. В теле запроса необходим отправить следующие параметры:
 
 name - имя пользователя
-events - список событий
+eventsDTO - список событий пользователя
+fileDTO - файлы который относится к событию
 file.name - имя файла 
 file.filePath - путь до файла
+createAt - время создания файла
+updatedAt - время обновления файла
+eventsDTO.fileDTO.status - статус файла
+eventsDTO.status - статус события
+status - статус пользователя
 
 Пример
 {
-    "name": "testAPi",
-    "events": [
+    "name": "test",
+    "status": "ACTIVE",
+    "eventsDTO": [
         {
-            "file": {
-                "name": "test23api",
-                "filePath": "/api"
-            }
+            "fileDTO": {
+                "name": "test",
+                "filePath": "/",
+                "createAt": "01.01.01",
+                "updatedAt": "01.01.01",
+                "status": "ACTIVE"
+            },
+            "status": "ACTIVE"
         }
     ]
 }
 ````
 ````
-PUT  /users - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
+PUT  /api/v1/users/{id} - позволяет обновить существующий объект.
 
 id - id пользователя
 name - имя пользователя
@@ -86,56 +97,58 @@ file.name - имя файла
 file.filePath - путь до файла
 
 Пример
-{   "id":4,
-    "name": "4",
+
+{
+    "name": "test",
+    "status": "ACTIVE",
     "events": [
         {
             "file": {
-                "name": "4",
-                "filePath": "4"
-            }
+                "name": "test",
+                "filePath": "/",
+                "createAt": "01.01.01",
+                "updatedAt": "01.01.01",
+                "status": "ACTIVE"
+            },
+            "status": "ACTIVE"
         }
     ]
-}
 ```` 
 ````
-
-DELETE /users - удаляет пользователя. 
-
-Пример
-
-http://localhost:8081/REST_API_/users?user_id=9
-user_id - id пользователя.
+DELETE /api/v1/users/{id}- удаляет пользователя по id. 
 ````
 
 ````
-GET /users/id - возвращает пользователя по id. 
-
-Пример
-http://localhost:8081/REST_API_/users/id?user_id=9
-user_id - id пользователя.
+GET /api/v1/users/{id} - возвращает пользователя по id. 
 ````
 
 **Events**
 ````
-GET /events - возвращает список всех событий
+GET /api/v1/events - возвращает список всех событий
 ````
 ````
-POST /events - добавляет новое событие. В теле запроса необходим отправить следующие параметры:
+POST /api/v1/events - добавляет новое событие. В теле запроса необходим отправить следующие параметры:
 
 name - имя файла
 filePath - путь до файла
+status - статус события
+updatedAt - дата обновления
+createAt - дата создания
 
 Пример
-  {
-        "file": {
-            "name": "test",
-            "filePath": "/",
-        }
-    }
+{
+    "fileDTO": {
+        "name": "test",
+        "filePath": "/",
+        "createAt": "sd",
+        "updatedAt": "fddf",
+        "status": "ACTIVE"
+    },
+    "status":"ACTIVE"
+}
 ````
 ````
-PUT  /events - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
+PUT  /api/v1/events/{id} - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
 
 id - id события
 file.id - id файла связанного с событием
@@ -144,81 +157,60 @@ filePath - путь до файла
 
 Пример
 {
-    "id": 10,
     "file": {
-        "id":4,
-        "name": "TEST",
-        "filePath": "/TEST"
-    }
+        "name": "test",
+        "filePath": "/",
+        "createAt": "sd",
+        "updatedAt": "fddf",
+        "status": "ACTIVE"
+    },
+    "status":"ACTIVE"
 }
 ```` 
 ````
-
-DELETE /events - удаляет событие. 
-
-Пример
-
-http://localhost:8081/REST_API_/users?event_id=9
-event_id - id события.
+DELETE //api/v1/events/{id} - удаляет событие. 
 ````
 ````
-GET /events/id - возвращает пользователя по id. 
-
-Пример
-http://localhost:8081/REST_API_/events/id?event_id=9
-event_id - id пользователя.
+GET /api/v1/events/{id} - возвращает событие по id. 
 ````
 
 **Files**
 ````
-GET /files - возвращает список всех файлов
+GET /api/v1/files - возвращает список всех файлов
 ````
 ````
-POST /files - добавляет новый файл. В теле запроса необходим отправить следующие параметры:
+POST /api/v1/files - добавляет новый файл.
 
-name - имя файла
-filePath - путь до файла
+file - ссылка на файл на вашей локальной машине
 
-Пример
- {
-    "name": "test",
-    "filePath": "/"
-}
+--form 'file=@"/C:/Users/test.txt"'
 ````
 ````
-PUT  /files - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
+PUT  /api/v1/files/{id} - позволяет обновить существующий объект. В теле запроса необходим отправить следующие параметры:
 
 id - id файла
 name - имя файла 
 filePath - путь до файла
+createAt - время создания файла
+updatedAt - время обновления файла
+status - статус файла
 
 Пример
-{   
-    "id":21,
-    "name": "123test",
-    "filePath": "/"
+{
+    "name": "test",
+    "filePath": "/",
+    "createAt": "01.01.01",
+    "updatedAt": "01.01.01",
+    "status": "ACTIVE"
 }
 ```` 
 ````
-
-DELETE /files - удаляет событие. 
-
-Пример
-
-http://localhost:8081/REST_API_/files?file_id=9
-file_id - id файла.
+DELETE /api/v1/files/{id} - удаляет файл. 
 ````
 ````
-GET /files/id - возвращает пользователя по id. 
-
-Пример
-http://localhost:8081/REST_API_/files/id?file_id=9
-file_id - id пользователя.
+GET /api/v1/files/{id}- возвращает пользователя по id. 
 ````
 
 ````
-GET /files/history - возвращает историю загрузки
-
-Пример
-http://localhost:8081/REST_API_/files/history
+GET /api/v1/files/history - возвращает историю загрузки
 ````

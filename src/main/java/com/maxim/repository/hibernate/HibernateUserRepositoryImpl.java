@@ -12,7 +12,7 @@ import java.util.List;
 
 public class HibernateUserRepositoryImpl implements UserRepository {
 
-    HibernateConnector hibernateConnector = new HibernateConnector();
+    private HibernateConnector hibernateConnector = new HibernateConnector();
 
     @Override
     public User getById(Integer id) {

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class HibernateFileRepositoryImpl implements FileRepository {
 
-    HibernateConnector hibernateConnector = new HibernateConnector();
+    private HibernateConnector hibernateConnector = new HibernateConnector();
 
     @Override
     public File getById(Integer id) {

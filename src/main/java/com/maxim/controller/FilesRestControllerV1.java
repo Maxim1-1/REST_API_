@@ -92,7 +92,7 @@ public class FilesRestControllerV1 extends HttpServlet {
         file.setName(fileName);
         file.setFilePath(filePath);
         file.setUpdatedAt(currentDate.toString());
-        file.setUpdatedAt(currentDate.toString());
+        file.setCreateAt(currentDate.toString());
         fileService.saveFile(file);
         resp.getWriter().write("Файл успешно загружен");
     }
@@ -126,8 +126,9 @@ public class FilesRestControllerV1 extends HttpServlet {
         String json = sb.toString();
         File file = new ObjectMapper().readerFor(File.class).readValue(json);
         String path = req.getPathInfo() != null ? req.getPathInfo() : "";
+        String file_id = path.substring(1);
         if (path.matches("/\\d+")) {
-            if (fileService.getFileById(file.getId()) != null) {
+            if (fileService.getFileById(Integer.valueOf(file_id)) != null) {
                 fileService.updateFile(file);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not exist");

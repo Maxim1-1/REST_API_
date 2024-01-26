@@ -97,8 +97,9 @@ public class UsersRestControllerV1 extends HttpServlet {
         String json = sb.toString();
         User user = new ObjectMapper().readerFor(User.class).readValue(json);
         String path = req.getPathInfo() != null ? req.getPathInfo() : "";
+        String user_id = path.substring(1);
         if (path.matches("/\\d+")) {
-            if (userService.getUserById(user.getId()) != null) {
+            if (userService.getUserById(Integer.valueOf(user_id)) != null) {
                 userService.updateUserById(user);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not exist");

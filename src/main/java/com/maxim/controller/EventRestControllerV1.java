@@ -98,8 +98,9 @@ public class EventRestControllerV1 extends HttpServlet {
         String json = sb.toString();
         Event event = new ObjectMapper().readerFor(Event.class).readValue(json);
         String path = req.getPathInfo() != null ? req.getPathInfo() : "";
+        String event_id = path.substring(1);
         if (path.matches("/\\d+")) {
-            if (eventService.getEventById(event.getId()) != null) {
+            if (eventService.getEventById(Integer.valueOf(event_id)) != null) {
                 eventService.updateEvent(event);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND,"User not exist");

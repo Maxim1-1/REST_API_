@@ -12,7 +12,7 @@ import java.util.List;
 
 public class HibernateEventRepositoryImpl implements EventRepository {
 
-    HibernateConnector hibernateConnector = new HibernateConnector();
+    private HibernateConnector hibernateConnector = new HibernateConnector();
 
     @Override
     public Event getById(Integer id) {

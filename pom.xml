@@ -94,9 +94,9 @@
         <artifactId>flyway-maven-plugin</artifactId>
         <version>9.22.2</version>
         <configuration>
-          <url>jdbc:mysql://localhost:3306/rest</url>
-          <user>root</user>
-          <password>root</password>
+          <url></url>
+          <user></user>
+          <password></password>
           <locations>
             <location>filesystem:src/main/resources/db/migration</location>
           </locations>
